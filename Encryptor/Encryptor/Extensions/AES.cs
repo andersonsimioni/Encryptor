@@ -29,7 +29,7 @@ namespace Encryptor.Extensions
         /// <param name="key"></param>
         /// <param name="initialVector"></param>
         /// <returns></returns>
-        public static byte[] EncodeAES256CBC(this byte[] value, byte[] key, byte[] initialVector)
+        public static byte[] EncodeAES256CBC(this byte[] value, byte[] key, byte[] initialVector, long rounds = 1)
         {
             var aes = Aes.Create();
             aes.Mode = CipherMode.CBC;
@@ -47,14 +47,10 @@ namespace Encryptor.Extensions
                     cs.Write(value, 0, value.Length);
                     cs.FlushFinalBlock();
                 }
-
                 cipher = ms.ToArray();
             }
 
-            //byte[] combined = new byte[aes.IV.Length + cipher.Length];
-            //Array.Copy(aes.IV, 0, combined, 0, aes.IV.Length);
-            //Array.Copy(cipher, 0, combined, aes.IV.Length, cipher.Length);
-            return cipher;
+            return rounds == 0 ? cipher : cipher.EncodeAES256CBC(key, initialVector, rounds-1);
         }
 
         /// <summary>
@@ -62,19 +58,15 @@ namespace Encryptor.Extensions
         /// </summary>
         /// <param name="value"></param>
         /// <param name="key"></param>
-        /// <param name="InitialVector"></param>
+        /// <param name="initialVector"></param>
         /// <returns></returns>
-        public static byte[] DecodeAES256CBC(this byte[] value, byte[] key, byte[] InitialVector)
+        public static byte[] DecodeAES256CBC(this byte[] value, byte[] key, byte[] initialVector, long rounds = 1)
         {
             var aes = Aes.Create();
             aes.Mode = CipherMode.CBC;
             aes.KeySize = 256;
             aes.Key = key;
-            aes.IV = InitialVector;
-
-            //byte[] cipherText = new byte[combinedData.Length - iv.Length];
-            //Array.Copy(combinedData, iv, iv.Length);
-            //Array.Copy(combinedData, iv.Length, cipherText, 0, cipherText.Length);
+            aes.IV = initialVector;
 
             var core = aes.CreateDecryptor();
 
@@ -85,8 +77,7 @@ namespace Encryptor.Extensions
                     cs.Write(value, 0, value.Length);
                     cs.FlushFinalBlock();
                 }
-
-                return ms.ToArray();
+                return rounds == 0 ? ms.ToArray() : ms.ToArray().DecodeAES256CBC(key, initialVector, rounds-1);
             }
         }
     }

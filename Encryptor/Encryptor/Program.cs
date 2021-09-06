@@ -9,11 +9,15 @@ namespace Encryptor
     {
         static Functions.Function[] Functions =
         {
-            new Functions.HardEnconding()
+            new Functions.HardEncoding(),
+            new Functions.DecodeHardEncoding(),
         };
 
         static void Main(string[] args)
         {
+            //args = new string[] { "0", "test.txt", "abc", "abc@123", "2" }; //Run to test encode file
+            //args = new string[] { "1", "test.txt.enc", "abc", "abc@123", "2" }; //Run to test decode file
+
             if (string.IsNullOrEmpty(args[0]))
                 throw new Exception("Invalid function name/id");
 

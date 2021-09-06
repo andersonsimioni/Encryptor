@@ -10,6 +10,18 @@ namespace Encryptor.Extensions
     public static class String
     {
         /// <summary>
+        /// Try to convert to int32, if fail return 0
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static int ToInt32(this string value) 
+        {
+            var val = 0;
+            int.TryParse(value, out val);
+            return val;
+        }
+
+        /// <summary>
         /// Convert byte array to UTF8 string
         /// </summary>
         /// <param name="value"></param>

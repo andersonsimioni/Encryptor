@@ -15,15 +15,32 @@ namespace Encryptor.Extensions
         /// <param name="value"></param>
         /// <param name="rounds"></param>
         /// <returns></returns>
-        public static byte[] MD5(this byte[] value, int rounds = 1) 
+        public static byte[] MD5(this byte[] value, long rounds = 1) 
         {
             var algo = HashAlgorithm.Create("MD5");
             var data = value;
 
-            for (int i = 0; i < rounds; i++)
+            for (long i = 0; i < rounds; i++)
                 data = algo.ComputeHash(data);
 
             return data;
+        }
+
+        /// <summary>
+        /// Compute SHA128 with rounds
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="rounds"></param>
+        /// <returns></returns>
+        public static byte[] SHA128(this byte[] value, long rounds = 1) 
+        {
+            var core = SHA1.Create("SHA128");
+            byte[] hash = value;
+
+            for (long i = 0; i < rounds; i++)
+                hash = core.ComputeHash(hash);
+
+            return hash;
         }
 
         /// <summary>
@@ -32,12 +49,12 @@ namespace Encryptor.Extensions
         /// <param name="value"></param>
         /// <param name="rounds"></param>
         /// <returns></returns>
-        public static byte[] SHA256(this byte[] value, int rounds = 1) 
+        public static byte[] SHA256(this byte[] value, long rounds = 1) 
         {
             var algo = HashAlgorithm.Create("SHA256");
             var data = value;
 
-            for (int i = 0; i < rounds; i++)
+            for (long i = 0; i < rounds; i++)
                 data = algo.ComputeHash(data);
 
             return data;
@@ -49,12 +66,12 @@ namespace Encryptor.Extensions
         /// <param name="value"></param>
         /// <param name="rounds"></param>
         /// <returns></returns>
-        public static byte[] SHA512(this byte[] value, int rounds = 1)
+        public static byte[] SHA512(this byte[] value, long rounds = 1)
         {
             var algo = HashAlgorithm.Create("SHA512");
             var data = value;
 
-            for (int i = 0; i < rounds; i++)
+            for (long i = 0; i < rounds; i++)
                 data = algo.ComputeHash(data);
 
             return data;
@@ -67,12 +84,12 @@ namespace Encryptor.Extensions
         /// <param name="hashName"></param>
         /// <param name="rounds"></param>
         /// <returns></returns>
-        public static byte[] EncodeHash(this byte[] value, string hashName, int rounds = 1) 
+        public static byte[] EncodeHash(this byte[] value, string hashName, long rounds = 1) 
         {
             var algo = HashAlgorithm.Create(hashName);
             var data = value;
 
-            for (int i = 0; i < rounds; i++)
+            for (long i = 0; i < rounds; i++)
                 data = algo.ComputeHash(data);
 
             return data;
