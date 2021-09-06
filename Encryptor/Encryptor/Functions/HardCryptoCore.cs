@@ -35,6 +35,11 @@ namespace Encryptor.Functions
             return MixPasswords().OrderBy(b => b).Last();
         }
 
+        protected long GenerateHashRounds(long currentRound) 
+        {
+            return currentRound * 1000;
+        }
+
         protected byte[] GeneratePrivateKey(long currentRound)
         {
             var salt = MixPasswords();
@@ -43,16 +48,18 @@ namespace Encryptor.Functions
             saltedKey.AddRange(Password1);
             saltedKey.AddRange(salt);
 
-            var hashed = saltedKey.ToArray().SHA512(currentRound);
-            var finalHash = hashed.SHA256(currentRound);
+            var rounds = GenerateHashRounds(currentRound);
+            var hashed = saltedKey.ToArray().SHA512(rounds);
+            var finalHash = hashed.SHA256(rounds);
 
             return finalHash;
         }
 
         protected byte[] GenerateInitialVector(long currentRound)
         {
-            var hash = Password2.SHA512(currentRound);
-            var finalHash = hash.SHA256(currentRound).MD5(currentRound);
+            var rounds = GenerateHashRounds(currentRound);
+            var hash = Password2.SHA512(rounds);
+            var finalHash = hash.SHA256(rounds).MD5(rounds);
 
             return finalHash;
         }
