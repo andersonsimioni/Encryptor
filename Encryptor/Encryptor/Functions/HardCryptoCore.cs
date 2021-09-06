@@ -14,6 +14,10 @@ namespace Encryptor.Functions
         protected byte[] Password2;
         protected int Difficulty;
 
+        /// <summary>
+        /// Unify password1 and password2 in new byte array
+        /// </summary>
+        /// <returns></returns>
         protected byte[] MixPasswords()
         {
             var mixed = new List<byte>();
@@ -30,16 +34,30 @@ namespace Encryptor.Functions
             return mixed.ToArray();
         }
 
+        /// <summary>
+        /// Get bigger byte of mixed password byte array 0x0-0xFF
+        /// </summary>
+        /// <returns></returns>
         protected int GenerateNumericPassword()
         {
             return MixPasswords().OrderBy(b => b).Last();
         }
 
+        /// <summary>
+        /// Get rounds to hash be computed
+        /// </summary>
+        /// <param name="currentRound"></param>
+        /// <returns></returns>
         protected long GenerateHashRounds(long currentRound) 
         {
             return currentRound * 1000;
         }
 
+        /// <summary>
+        /// Create private key to current AES round
+        /// </summary>
+        /// <param name="currentRound"></param>
+        /// <returns></returns>
         protected byte[] GeneratePrivateKey(long currentRound)
         {
             var salt = MixPasswords();
@@ -55,6 +73,11 @@ namespace Encryptor.Functions
             return finalHash;
         }
 
+        /// <summary>
+        /// Create Initial Vector to current AES round
+        /// </summary>
+        /// <param name="currentRound"></param>
+        /// <returns></returns>
         protected byte[] GenerateInitialVector(long currentRound)
         {
             var rounds = GenerateHashRounds(currentRound);
@@ -64,6 +87,10 @@ namespace Encryptor.Functions
             return finalHash;
         }
 
+        /// <summary>
+        /// Get main encryption rounds
+        /// </summary>
+        /// <returns></returns>
         protected long GenerateRounds() 
         {
             return GenerateNumericPassword() * Difficulty;

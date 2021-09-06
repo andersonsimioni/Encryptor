@@ -11,8 +11,16 @@ namespace Encryptor.Functions
     {
         private Stopwatch TimeAnalizer;
 
+        /// <summary>
+        /// Return function name to call
+        /// </summary>
+        /// <returns></returns>
         public abstract string GetName();
 
+        /// <summary>
+        /// Return function help guide
+        /// </summary>
+        /// <returns></returns>
         public abstract string GetHelp();
 
         /// <summary>
@@ -53,6 +61,10 @@ namespace Encryptor.Functions
             Console.WriteLine($"Total time: {TimeAnalizer.ElapsedMilliseconds/1000}s");
         }
 
+        /// <summary>
+        /// Execute function method
+        /// </summary>
+        /// <param name="args"></param>
         public abstract void Execute(string[] args);
     }
 }
