@@ -9,7 +9,10 @@ namespace Encryptor
         static void Main(string[] args)
         {
 #if DEBUG
-            args = "0 -d a.txt -p1 123 -p2 321 -ocf hex".Split(' ');
+            string command = "";
+            Console.Write("command...?");
+            command = Console.ReadLine();
+            args = command.Split(' ');
 #endif
             Console.Title = "Encryptor tool";
             var terminal = new Terminal.EncryptorTerminal(args);

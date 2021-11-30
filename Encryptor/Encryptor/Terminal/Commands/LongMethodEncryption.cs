@@ -54,7 +54,7 @@ namespace Encryptor.Terminal.Commands
             {
                 var privateKey = GeneratePrivateKey(currentRound);
                 var initialVector = GenerateInitialVector(currentRound);
-                encryptedContent = encryptedContent.EncodeAES256CBCRandomInfo(privateKey, initialVector, (ulong)currentRound);
+                encryptedContent = encryptedContent.EncodeAES256CBCRandomInfoExtreme(privateKey, initialVector, (ulong)currentRound);
                 ITerminalCommand.ReportProgress(arguments, currentRound, difficultedRounds);
             }
 

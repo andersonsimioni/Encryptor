@@ -263,6 +263,43 @@ namespace Extensions
         }
 
 
+        /// <summary>
+        /// Encode extreme randonized byte data into cipher data
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="key"></param>
+        /// <param name="initialVector"></param>
+        /// <returns></returns>
+        public static byte[] EncodeAES256CBCRandomInfoExtreme(this byte[] value, byte[] key, byte[] initialVector, ulong rounds = 1)
+        {
+            try
+            {
+                return rounds <= 0 ? value : EncodeAES256CBCRandomInfoExtreme(value.ConvertToRandomFormat(), key, initialVector, rounds - 1);
+            }
+            catch (Exception)
+            {
+                throw new Exception("Error on compute random AES");
+            }
+        }
+
+        /// <summary>
+        /// Decode extreme randonized byte data into text data
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="key"></param>
+        /// <param name="initialVector"></param>
+        /// <returns></returns>
+        public static byte[] DecodeAES256CBCRandomInfoExtreme(this byte[] value, byte[] key, byte[] initialVector, ulong rounds = 1)
+        {
+            try
+            {
+                return rounds <= 0 ? value : DecodeAES256CBCRandomInfoExtreme(value.ConvertFromRandomFormat(), key, initialVector, rounds - 1);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error on compute random AES");
+            }
+        }
 
         /// <summary>
         /// Encode randonized byte data into cipher data
